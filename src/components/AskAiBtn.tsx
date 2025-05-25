@@ -57,7 +57,7 @@ const handleClickInput = () => {
   textAreaRef.current?.focus();
 }
 
-const handleSubmit = async (e: React.FormEvent) => {
+const handleSubmit = async () => {
   if (!questionText.trim()) return;
 
   const newQuestions = [...question, questionText];
@@ -84,7 +84,7 @@ const scrollToBottom = () => {
 const handleKeyDown = (e:React.KeyboardEvent<HTMLTextAreaElement>) => {
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
-    handleSubmit(e);
+    handleSubmit();
   }
 }
 
