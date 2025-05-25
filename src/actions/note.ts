@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { getUser } from "@/auth/server";
 import { prisma } from "@/db/prisma";
@@ -10,94 +10,95 @@ export const createNoteAction = async (noteId: string) => {
   try {
     const user = await getUser();
     if (!user) throw new Error("You must be logged in to create a note");
-    
+
     await prisma.note.create({
       data: {
         id: noteId,
         authorId: user.id,
         text: "",
-      }
-    })
+      },
+    });
     return { errorMessage: null };
-  }
-  catch(error) {
+  } catch (error) {
     return handleError(error);
   }
-}
+};
 export const deleteNoteAction = async (noteId: string) => {
   try {
     const user = await getUser();
     if (!user) throw new Error("You must be logged in to delete a note");
     await prisma.note.delete({
-      where: {id: noteId, authorId:user.id},      
-    })
+      where: { id: noteId, authorId: user.id },
+    });
     return { errorMessage: null };
-  }
-  catch(error) {
+  } catch (error) {
     return handleError(error);
   }
-}
+};
 
 export const updateNoteAction = async (noteId: string, text: string) => {
   try {
     const user = await getUser();
     if (!user) throw new Error("You must be logged in to update a note");
-    console.log(noteId)
+    console.log(noteId);
     await prisma.note.update({
-      where: {id: noteId},
-      data: {text: text}
-    })
+      where: { id: noteId },
+      data: { text: text },
+    });
     return { errorMessage: null };
-  }
-  catch(error) {
+  } catch (error) {
     return handleError(error);
   }
-}
- 
-export const askAIAboutNotes = async (newQuestion: string[], previousResponses: string[]) => {
-    const user = await getUser();
-    if (!user) throw new Error("You must be logged in to ask AI questions");
+};
 
-  const groq = new Groq({apiKey: process.env.GROQ_API_KEY || ""});
-  
-    const notes=await prisma.note.findMany({
-      where: {
-        authorId: user.id,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      select: {
-        text: true,
-        createdAt: true,
-        updatedAt: true,
-      }
-    })
+export const askAIAboutNotes = async (
+  newQuestion: string[],
+  previousResponses: string[],
+) => {
+  const user = await getUser();
+  if (!user) throw new Error("You must be logged in to ask AI questions");
 
-    if (notes.length === 0) {
-      return "You have no notes yet.";
-    }
+  const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || "" });
 
-    // Define interfaces for note structure
-    interface Note {
-      text: string;
-      createdAt: Date;
-      updatedAt: Date;
-    }
+  const notes = await prisma.note.findMany({
+    where: {
+      authorId: user.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    select: {
+      text: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
 
-    const formattedNotes: string = notes.map((note: Note) =>
+  if (notes.length === 0) {
+    return "You have no notes yet.";
+  }
+
+  // Define interfaces for note structure
+  interface Note {
+    text: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+
+  const formattedNotes: string = notes
+    .map((note: Note) =>
       `
     Text: ${note.text}
     Created At: ${note.createdAt.toISOString()}
     Last Updated: ${note.updatedAt.toISOString()}
-    `.trim()
-    ).join("\n");
+    `.trim(),
+    )
+    .join("\n");
 
   const MSG: ChatCompletionMessageParam[] = [
-      {
-        role: "system",
-        content: 
-            `You are a helpful assistant that answers questions about a user's notes. 
+    {
+      role: "system",
+      content: `You are a helpful assistant that answers questions about a user's notes. 
             Assume all questions are related to the user's notes. 
             Make sure that your answers are not too verbose and you speak succinctly. 
             Your responses MUST be formatted in clean, valid HTML with proper structure. 
@@ -111,13 +112,13 @@ export const askAIAboutNotes = async (newQuestion: string[], previousResponses: 
             Here are the user's notes:
             ${formattedNotes}
             `,
-      },
+    },
   ];
-  
-  for (let i = 0; i < newQuestion.length; i++){
+
+  for (let i = 0; i < newQuestion.length; i++) {
     MSG.push({
-        role: "user",
-        content: newQuestion[i],
+      role: "user",
+      content: newQuestion[i],
     });
     if (previousResponses[i]) {
       MSG.push({
@@ -130,7 +131,7 @@ export const askAIAboutNotes = async (newQuestion: string[], previousResponses: 
   const AIResponse = await groq.chat.completions.create({
     messages: MSG,
     model: "llama-3.1-8b-instant",
-  })
+  });
 
   return AIResponse.choices[0].message.content;
-}
+};

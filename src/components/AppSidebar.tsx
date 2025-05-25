@@ -1,11 +1,11 @@
-import { getUser } from "@/auth/server"
+import { getUser } from "@/auth/server";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 import { prisma } from "@/db/prisma";
 import { Note } from "@prisma/client";
 import Link from "next/link";
@@ -20,8 +20,8 @@ export async function AppSidebar() {
         authorId: user.id,
       },
       orderBy: {
-        updatedAt: "desc"
-      }
+        updatedAt: "desc",
+      },
     });
   }
   return (
@@ -31,19 +31,18 @@ export async function AppSidebar() {
         <SidebarGroupLabel className="text-2xl font-semibold">
           {user ? (
             "Your Notes"
-          )
-          :(
-              <p>
-                <Link href={"/login"} className="underline">
+          ) : (
+            <p>
+              <Link href={"/login"} className="underline">
                 Login to see your notes
-                </Link>
-              </p>
+              </Link>
+            </p>
           )}
         </SidebarGroupLabel>
-        {user && <SidebarGroupCon notes={notes}/>}
+        {user && <SidebarGroupCon notes={notes} />}
         <SidebarGroup />
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
-  )
+  );
 }

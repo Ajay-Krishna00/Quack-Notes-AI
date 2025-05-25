@@ -20,24 +20,26 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
           <NoteProvider>
-          <SidebarProvider>
-            <AppSidebar />
-            <div className="flex flex-col w-full min-h-screen">
-            <Header />
-            <main className="flex flex-1 flex-col px-4 pt-10 xl:px-8">{children}</main>
-          </div>
+            <SidebarProvider>
+              <AppSidebar />
+              <div className="flex min-h-screen w-full flex-col">
+                <Header />
+                <main className="flex flex-1 flex-col px-4 pt-10 xl:px-8">
+                  {children}
+                </main>
+              </div>
             </SidebarProvider>
 
-          <Toaster richColors position="bottom-center" />
+            <Toaster richColors position="bottom-center" />
           </NoteProvider>
-          </ThemeProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

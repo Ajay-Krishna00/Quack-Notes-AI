@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { NoteProviderContext } from "@/providers/NotesProvider";
 import { useContext } from "react";
@@ -12,4 +12,4 @@ function useNote() {
   return context;
 }
 
-export default useNote
+export default useNote;

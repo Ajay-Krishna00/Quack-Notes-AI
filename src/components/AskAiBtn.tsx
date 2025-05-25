@@ -1,7 +1,7 @@
 "use client";
 
-import { User } from "@supabase/supabase-js"
-import { Button } from "@/components/ui/button"
+import { User } from "@supabase/supabase-js";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,17 +9,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import { Fragment, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Textarea } from "./ui/textarea";
 import { ArrowUpIcon } from "lucide-react";
 import { askAIAboutNotes } from "@/actions/note";
-import "@/styles/ai.css"
+import "@/styles/ai.css";
 
-type Props={
+type Props = {
   user: User | null;
-}
+};
 
 function AskAiBtn({ user }: Props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,82 +40,89 @@ function AskAiBtn({ user }: Props) {
         setResponse([]);
       }
       setIsOpen(isOpen);
-      }
     }
+  };
 
-const textAreaRef = useRef<HTMLTextAreaElement>(null);
-const contentRef = useRef<HTMLDivElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-const handleInput = () => {
-  if (!textAreaRef.current) return;
+  const handleInput = () => {
+    if (!textAreaRef.current) return;
 
-  textAreaRef.current.style.height = "auto"; // Reset height
-  textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`; // Set height to scrollHeight
-}
+    textAreaRef.current.style.height = "auto"; // Reset height
+    textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`; // Set height to scrollHeight
+  };
 
-const handleClickInput = () => {
-  textAreaRef.current?.focus();
-}
+  const handleClickInput = () => {
+    textAreaRef.current?.focus();
+  };
 
-const handleSubmit = async () => {
-  if (!questionText.trim()) return;
+  const handleSubmit = async () => {
+    if (!questionText.trim()) return;
 
-  const newQuestions = [...question, questionText];
-  setQuestion(newQuestions);
-  setQuestionText("");
-  setTimeout(scrollToBottom, 100);
-
-  startTransition(async () => {
-    const responses = await askAIAboutNotes(newQuestions, response);
-    if (responses !== null) {
-      setResponse((prev) => [...prev, responses]);
-    }
+    const newQuestions = [...question, questionText];
+    setQuestion(newQuestions);
+    setQuestionText("");
     setTimeout(scrollToBottom, 100);
-  })
-}
 
-const scrollToBottom = () => {
-  contentRef.current?.scrollTo({
-    top: contentRef.current.scrollHeight,
-    behavior: "smooth",
-  })
-}
+    startTransition(async () => {
+      const responses = await askAIAboutNotes(newQuestions, response);
+      if (responses !== null) {
+        setResponse((prev) => [...prev, responses]);
+      }
+      setTimeout(scrollToBottom, 100);
+    });
+  };
 
-const handleKeyDown = (e:React.KeyboardEvent<HTMLTextAreaElement>) => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    handleSubmit();
-  }
-}
+  const scrollToBottom = () => {
+    contentRef.current?.scrollTo({
+      top: contentRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange} >
-    <DialogTrigger asChild>
-      <Button variant="secondary">Ask AI</Button>
-    </DialogTrigger>
-    <DialogContent className="custom-scrollbar h-[85vh] flex flex-col  overflow-y-auto " ref={contentRef}> 
-      <DialogHeader>
-        <DialogTitle>Ask AI About Your Notes</DialogTitle>
-        <DialogDescription>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>
+        <Button variant="secondary">Ask AI</Button>
+      </DialogTrigger>
+      <DialogContent
+        className="custom-scrollbar flex h-[85vh] flex-col overflow-y-auto"
+        ref={contentRef}
+      >
+        <DialogHeader>
+          <DialogTitle>Ask AI About Your Notes</DialogTitle>
+          <DialogDescription>
             Our AI can answer questions about all your notes
           </DialogDescription>
         </DialogHeader>
         <div className="mt-4 flex flex-col gap-8">
           {question.map((q, index) => (
             <Fragment key={index}>
-              <p className="bg-muted text-muted-foreground ml-auto max-w-[60%] rounded-md px-2 py-1 text-sm ">
+              <p className="bg-muted text-muted-foreground ml-auto max-w-[60%] rounded-md px-2 py-1 text-sm">
                 {q}
               </p>
               {response[index] && (
-                <p className="bot-response text-muted-foreground text-sm"
-                dangerouslySetInnerHTML={{ __html: response[index] }}
+                <p
+                  className="bot-response text-muted-foreground text-sm"
+                  dangerouslySetInnerHTML={{ __html: response[index] }}
                 />
               )}
             </Fragment>
           ))}
           {isPending && <p className="animate-pulse text-sm">Thinking...</p>}
         </div>
-        <div className="mt-auto flex cursor-text flex-col rounded-lg border p-4" onClick={handleClickInput}>
+        <div
+          className="mt-auto flex cursor-text flex-col rounded-lg border p-4"
+          onClick={handleClickInput}
+        >
           <Textarea
             ref={textAreaRef}
             placeholder="Ask me anything about your notes..."
@@ -128,12 +135,12 @@ const handleKeyDown = (e:React.KeyboardEvent<HTMLTextAreaElement>) => {
             onChange={(e) => setQuestionText(e.target.value)}
           />
           <Button className="ml-auto size-8 rounded-full">
-            <ArrowUpIcon className="text-background"/>
+            <ArrowUpIcon className="text-background" />
           </Button>
         </div>
-    </DialogContent>
-  </Dialog>
-  )
+      </DialogContent>
+    </Dialog>
+  );
 }
 
-export default AskAiBtn
+export default AskAiBtn;

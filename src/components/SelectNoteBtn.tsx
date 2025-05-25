@@ -1,14 +1,14 @@
-"use client"
-import React, { useEffect, useState } from 'react'
-import  {Note}  from "@prisma/client"
-import { useSearchParams } from 'next/navigation';
-import useNote from '@/hooks/useNote';
-import { SidebarMenuButton } from './ui/sidebar';
-import Link from 'next/link';
+"use client";
+import React, { useEffect, useState } from "react";
+import { Note } from "@prisma/client";
+import { useSearchParams } from "next/navigation";
+import useNote from "@/hooks/useNote";
+import { SidebarMenuButton } from "./ui/sidebar";
+import Link from "next/link";
 
 type Props = {
   note: Note;
-}
+};
 
 function SelectNoteBtn({ note }: Props) {
   const noteId = useSearchParams().get("notes") || "";
@@ -19,17 +19,16 @@ function SelectNoteBtn({ note }: Props) {
   useEffect(() => {
     if (noteId === note.id) {
       setShouldUseGlobalText(true);
-    }
-    else {
+    } else {
       setShouldUseGlobalText(false);
     }
-  }, [noteId, note.id])
-  
+  }, [noteId, note.id]);
+
   useEffect(() => {
     if (shouldUseGlobalText) {
       setLocalText(selectNoteText);
     }
-  },[shouldUseGlobalText, selectNoteText])
+  }, [shouldUseGlobalText, selectNoteText]);
 
   const blankText = "EMPTY NOTE";
 
@@ -39,17 +38,20 @@ function SelectNoteBtn({ note }: Props) {
   }
 
   return (
-    <SidebarMenuButton asChild className={`items-start gap-0 pr-10 ${note.id===noteId && "bg-sidebar-accent/70"}`}>
-      <Link href={`?/notes/${note.id}`} className='flex h-fit flex-col'>
-        <p className='w-full truncate text-ellipsis overflow-hidden  whitespace-nowrap text-sm font-semibold'>
-        {noteText}
+    <SidebarMenuButton
+      asChild
+      className={`items-start gap-0 pr-10 ${note.id === noteId && "bg-sidebar-accent/70"}`}
+    >
+      <Link href={`?/notes/${note.id}`} className="flex h-fit flex-col">
+        <p className="w-full truncate overflow-hidden text-sm font-semibold text-ellipsis whitespace-nowrap">
+          {noteText}
         </p>
-        <p className='text-xs text-muted-foreground'>
+        <p className="text-muted-foreground text-xs">
           {note.updatedAt.toLocaleDateString()}
-      </p>
+        </p>
       </Link>
     </SidebarMenuButton>
-  )
+  );
 }
 
-export default SelectNoteBtn
+export default SelectNoteBtn;

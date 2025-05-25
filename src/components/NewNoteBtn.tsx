@@ -1,5 +1,5 @@
 "use client";
-import {User} from "@supabase/supabase-js"
+import { User } from "@supabase/supabase-js";
 import { Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
@@ -10,34 +10,33 @@ import { createNoteAction } from "@/actions/note";
 
 type Props = {
   user: User | null;
-}
+};
 
-function NewNoteBtn({user}: Props) {
-  const router =useRouter();
-  const [loading, setLoading] = useState(false);  
+function NewNoteBtn({ user }: Props) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const handleNewNoteBtn = async () => {
-    if(!user){
-      router.push("/login")
-    }
-    else {
+    if (!user) {
+      router.push("/login");
+    } else {
       setLoading(true);
       const uuid = uuidv4();
       await createNoteAction(uuid);
       router.push(`/?notes=${uuid}`);
-      toast.success("New note created")
+      toast.success("New note created");
     }
     setLoading(false);
-  }
+  };
   return (
     <Button
       onClick={handleNewNoteBtn}
-      variant={'secondary'}
-      className='w-24'
+      variant={"secondary"}
+      className="w-24"
       disabled={loading}
     >
-      {loading? <Loader2 className='animate-spin' /> : "New Note"}
+      {loading ? <Loader2 className="animate-spin" /> : "New Note"}
     </Button>
-  )
+  );
 }
 
-export default NewNoteBtn
+export default NewNoteBtn;

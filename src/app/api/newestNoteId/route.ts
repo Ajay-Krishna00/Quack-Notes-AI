@@ -9,13 +9,13 @@ export async function GET(request: NextRequest) {
       authorId: userId,
     },
     orderBy: {
-      createdAt:"desc",
+      createdAt: "desc",
     },
     select: {
       id: true,
-    }
-  })
+    },
+  });
   return NextResponse.json({
     newestNoteId: newestNoteId?.id,
-  })
+  });
 }

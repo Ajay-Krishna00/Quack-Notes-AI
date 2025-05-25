@@ -1,4 +1,4 @@
-"use server"
+"use server";
 // tell nextjs this is a server action
 import { createClient } from "@/auth/server";
 import { prisma } from "@/db/prisma";
@@ -9,17 +9,16 @@ export const loginAction = async (email: string, password: string) => {
     const { auth } = await createClient();
     const { error } = await auth.signInWithPassword({
       email,
-      password
+      password,
     });
 
     if (error) throw error;
 
     return { errorMessage: null };
-  }
-  catch(error) {
+  } catch (error) {
     return handleError(error);
   }
-}
+};
 export const logoutAction = async () => {
   try {
     const { auth } = await createClient();
@@ -28,17 +27,16 @@ export const logoutAction = async () => {
     if (error) throw error;
 
     return { errorMessage: null };
-  }
-  catch(error) {
+  } catch (error) {
     return handleError(error);
   }
-}
+};
 export const signupAction = async (email: string, password: string) => {
   try {
     const { auth } = await createClient();
-    const {data, error } = await auth.signUp({
+    const { data, error } = await auth.signUp({
       email,
-      password
+      password,
     });
 
     if (error) throw error;
@@ -51,12 +49,11 @@ export const signupAction = async (email: string, password: string) => {
       data: {
         id: userId,
         email,
-      }
-    })
+      },
+    });
 
     return { errorMessage: null };
-  }
-  catch(error) {
+  } catch (error) {
     return handleError(error);
   }
-}
+};
