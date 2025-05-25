@@ -67,7 +67,9 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   startTransition(async () => {
     const responses = await askAIAboutNotes(newQuestions, response);
-    setResponse((prev) => [...prev, responses]);
+    if (responses !== null) {
+      setResponse((prev) => [...prev, responses]);
+    }
     setTimeout(scrollToBottom, 100);
   })
 }

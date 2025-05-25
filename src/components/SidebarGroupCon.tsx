@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import Fuse from "fuse.js";
 import SelectNoteBtn from "./SelectNoteBtn";
 import DeleteNoteBtn from "./DeleteNoteBtn";
+import { useRouter } from "next/navigation";
 
 type Props = {
   notes: Note[];
@@ -16,6 +17,8 @@ type Props = {
 function SidebarGroupCon({notes}: Props) {
   const [searchText, setSearchText] = useState<string>("");
   const [localNotes, setLocalNotes] = useState(notes);
+
+  const router = useRouter();
 
   useEffect(() => {
     setLocalNotes(notes);
@@ -34,6 +37,16 @@ function SidebarGroupCon({notes}: Props) {
     setLocalNotes((prevNotes) => prevNotes.filter(note => note.id !== notesId));
   }
 
+  const handleSelectNote = (noteId: string) => {
+    return () => {
+      const note = localNotes.find(n => n.id === noteId);// Find the note in the local notes
+      if (!note) return;
+      if (note) {
+        router.push(`/?notes=${note.id}`);
+      }
+    }
+  }
+
   return (
     <SidebarGroupContentShadCN>
       <div className="relative flex items-center">
@@ -46,9 +59,8 @@ function SidebarGroupCon({notes}: Props) {
       </div>
       <SidebarMenu>
         {filteredNotes.map((note) => (
-          <SidebarMenuItem key={note.id} className="group/item">
+          <SidebarMenuItem key={note.id} className="group/item" onClick={handleSelectNote(note.id)}>
             <SelectNoteBtn note={note} />
-            
             <DeleteNoteBtn noteId={note.id} deleteNoteLocally={deleteNoteLocally} />
           </SidebarMenuItem>
         ))}
