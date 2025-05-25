@@ -2,7 +2,7 @@ import { getUser } from "@/auth/server";
 import { prisma } from "@/db/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request) {
+export async function GET() {
   const user = await getUser();
   const data = await prisma.note.findFirst({
     where: {
