@@ -59,6 +59,7 @@ export async function updateSession(request: NextRequest) {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+    
     if (user) {
       const { newestNoteId } = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/newestNoteId?userId=${user.id}`,
