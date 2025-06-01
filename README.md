@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🦆 Quack Notes AI
 
-## Getting Started
+Quack Notes AI is a full-stack note-taking application that lets you create, organize, and interact with your notes using AI. Built with bleeding-edge web technologies like **Next.js 15 App Router**, **Supabase**, **Prisma**, **shadcn/ui**, and **TailwindCSS**, it also integrates the **Grok API** to provide contextual AI-powered chat with your notes.
 
-First, run the development server:
+🚀 **Live App**: [quack-notes-ai.vercel.app](https://quack-notes-ai.vercel.app/)
 
+---
+
+## ✨ Features
+
+- 🧠 **AI Chat with Your Notes** – Ask questions and get insights from your notes via Grok API.
+- 🔐 **Auth with Supabase** – Secure authentication and user management.
+- 📄 **CRUD for Notes** – Create, read, update, and delete your notes.
+- 🧱 **PostgreSQL + Prisma ORM** – Powerful relational data modeling and access.
+- 🎨 **Modern UI** – Built with shadcn/ui and TailwindCSS for a sleek, minimal interface.
+- ⚡ **Deployed on Vercel** – Super-fast serverless deployment.
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology     | Purpose                          |
+|----------------|----------------------------------|
+| Next.js 15     | Frontend + Backend (App Router)  |
+| Supabase       | Auth + PostgreSQL Database       |
+| Prisma         | ORM for DB modeling              |
+| TailwindCSS    | Utility-first CSS styling        |
+| shadcn/ui      | Prebuilt UI components           |
+| Grok API       | AI-based chat interaction        |
+| Vercel         | Hosting & Deployment             |
+
+
+---
+
+## 🔐 Environment Variables
+
+Create a `.env` file at the root with the following:
+
+```env
+DATABASE_URL=postgresql://<your-supabase-db-url>
+NEXT_PUBLIC_SUPABASE_URL=https://<your-project>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+GROK_API_KEY=your-grok-api-key
+ ```
+---
+
+## 🧪 Getting Started Locally
+
+1. Clone the repo
+```bash
+git clone https://github.com/yourusername/quack-notes-ai.git
+cd quack-notes-ai
+```
+2. Install dependencies
+```bash
+npm install
+```
+3. Set up Prisma
+```bash
+npx prisma generate
+npx prisma db push
+```
+4. Run the dev server
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
+App should be live at: http://localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 💡 Future Improvements
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 🔍 Full-text search and filtering
+- 🗂️ Tag-based organization
+- 📱 PWA/mobile-friendly interface
+- 🧩 Plugin architecture for more AI models
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🧠 About the AI (Grok Integration)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The Grok API enables contextual conversations with your notes. It intelligently parses note content and uses context windows to provide relevant answers to your queries. Perfect for summarization, recall, or brainstorming.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🧑‍💻 Author
+Built with ❤️ by *Ajay Krishna D*
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📜 License
+MIT License – free to use, modify, and build on.
