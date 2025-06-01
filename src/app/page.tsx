@@ -1,5 +1,6 @@
 import { getUser } from "@/auth/server";
 import AskAiBtn from "@/components/AskAiBtn";
+import Footer from "@/components/Footer";
 import NewNoteBtn from "@/components/NewNoteBtn";
 import NoteTextInput from "@/components/NoteTextInput";
 import { prisma } from "@/db/prisma";
@@ -29,6 +30,9 @@ async function HomePage({ searchParams }: Props) {
         <NewNoteBtn user={user} />
       </div>
       <NoteTextInput noteId={noteId} startingNoteText={note?.text || ""} />
+      <div className="w-full">
+        <Footer/>
+      </div>
     </div>
   );
 }

@@ -12,7 +12,19 @@ export async function GET() {
       text: true,
     },
   });
-  return NextResponse.json({
-    status: `pong: ${data?.text ?? "no note found"}`,
-  });
+  return new NextResponse(
+    JSON.stringify({
+      status: `pong: ${data?.text ?? "no note found"}`,
+    }),
+    {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "//https://beast-log.vercel.app", 
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      },
+    }
+  );
+
 }
